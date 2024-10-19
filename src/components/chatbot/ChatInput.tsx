@@ -11,6 +11,20 @@ interface ChatInputProps {
   setMessage: (msg: string) => void;
 }
 
+const IconButton: React.FC<{
+  icon: React.ReactNode;
+  title: string;
+  onClick?: () => void;
+}> = React.memo(({ icon, title, onClick }) => (
+  <div
+    onClick={onClick}
+    className="group text-slate-700 text-lg cursor-pointer relative"
+    data-title={title}
+  >
+    {icon}
+  </div>
+));
+
 const ChatInput: React.FC<ChatInputProps> = ({
   onSend,
   toggleEmojiPanel,
@@ -43,26 +57,11 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const handleOnKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (e.key === "Enter") {
+        e.preventDefault();
         handleSend(true);
-      } else {
-        return;
       }
     },
     [handleSend]
-  );
-
-  const IconButton: React.FC<{
-    icon: React.ReactNode;
-    title: string;
-    onClick?: () => void;
-  }> = ({ icon, title, onClick }) => (
-    <div
-      onClick={onClick}
-      className="group text-slate-700 text-lg cursor-pointer relative data-title"
-      data-title={title}
-    >
-      {icon}
-    </div>
   );
 
   return (
@@ -70,7 +69,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
       <textarea
         ref={msgInputRef}
         placeholder="Enter your message..."
-        className="focus:ring-0 focus-visible:outline-none h-12 w-full  overflow-wrap mb-2 resize-none"
+        className="focus:ring-0 focus-visible:outline-none h-12 w-full overflow-wrap mb-2 resize-none"
         value={message}
         onChange={handleOnChange}
         onKeyDown={handleOnKeyDown}

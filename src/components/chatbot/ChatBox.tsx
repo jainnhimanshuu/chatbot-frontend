@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 import ChatbotHeader from "./chatbotHeader";
@@ -12,20 +12,23 @@ const ChatBox: React.FC = () => {
     { message: string; sender: "user" | "bot" }[]
   >([{ message: "Hello! How can I help you today?", sender: "bot" }]);
 
-  const handleSendMessage = (message: string) => {
-    setMessages([...messages, { message, sender: "user" }]);
+  const handleSendMessage = useCallback((message: string) => {
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { message, sender: "user" },
+    ]);
     setTimeout(() => {
-      setMessages([
-        ...messages,
+      setMessages((prevMessages) => [
+        ...prevMessages,
         { message, sender: "user" },
         { message: "Let me assist you with that.", sender: "bot" },
       ]);
     }, 1000);
-  };
+  }, []);
 
-  const handleEmojiClick = (emoji: { emoji: string }) => {
+  const handleEmojiClick = useCallback((emoji: { emoji: string }) => {
     setMessage((prevMessage) => prevMessage + emoji.emoji);
-  };
+  }, []);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
