@@ -10,12 +10,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, sender }) => {
   const [audio] = useState(new Audio("/noti.mp3"));
 
   useEffect(() => {
-    if (sender === "bot") {
+    if (message && sender === "bot") {
       audio.play().catch((error) => {
         console.error("Error playing audio:", error);
       });
     }
-  }, [sender, audio]);
+  }, [sender, audio, message]);
 
   return (
     <div

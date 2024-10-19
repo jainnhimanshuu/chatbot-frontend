@@ -32,26 +32,39 @@ const ChatInput: React.FC<ChatInputProps> = ({
   setMessage,
 }) => {
   const msgInputRef = useRef<HTMLTextAreaElement>(null);
-  const [isBtnDisabled, setIsBtnDisabled] = useState(true);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const handleOnChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const msg = e.target.value;
       setMessage(msg);
-      setIsBtnDisabled(msg.trim() === "");
     },
     [setMessage]
   );
 
   const handleSend = useCallback(
     (isEnterPressed?: boolean) => {
-      if (message.trim()) {
+      setIsButtonClicked(true);
+      setTimeout(() => setIsButtonClicked(false), 300);
+      if (message.trim() !== "") {
         onSend(message);
         if (!isEnterPressed) toggleEmojiPanel();
         setMessage("");
       }
     },
     [message, onSend, toggleEmojiPanel, setMessage]
+  );
+
+  const handleFileSelect = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        console.log("Selected file:", file.name);
+      }
+    },
+    []
   );
 
   const handleOnKeyDown = useCallback(
@@ -74,6 +87,12 @@ const ChatInput: React.FC<ChatInputProps> = ({
         onChange={handleOnChange}
         onKeyDown={handleOnKeyDown}
       />
+      <input
+        type="file"
+        ref={fileInputRef}
+        hidden
+        onChange={handleFileSelect}
+      />
       <div className="flex items-center gap-2 divide-x divide-slate-300">
         <IconButton
           icon={
@@ -86,6 +105,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
             <RiAttachment2 className="ml-2 group-hover:animate-bounce transition-all delay-200" />
           }
           title="Attachment"
+          onClick={() => fileInputRef.current?.click()}
         />
         <IconButton
           onClick={toggleEmojiPanel}
@@ -96,14 +116,18 @@ const ChatInput: React.FC<ChatInputProps> = ({
         />
       </div>
       <button
-        onClick={() => handleSend()}
-        disabled={isBtnDisabled}
+        onClick={() => {
+          handleSend();
+        }}
         aria-label="Send message"
         className={cn(
           "absolute right-0 lg:-right-4 bottom-8 rounded-full h-12 w-12 flex items-center justify-center text-2xl cursor-pointer",
           "bg-gradient-to-br from-[#272ddc] to-[#07aff9] text-white hover:from-white hover:text-blue-600 hover:to-white shadow-xl transition-all"
         )}
       >
+        {isButtonClicked && (
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+        )}
         <IoSendSharp />
       </button>
     </div>

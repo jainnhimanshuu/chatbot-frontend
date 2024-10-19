@@ -10,9 +10,14 @@ export default function Skeleton() {
             <div className="bg-slate-300 h-64 rounded-lg w-full"></div>
           </div>
           <div className="flex gap-2 mb-2">
-            {Array(3).fill(
-              <div className="bg-gray-200 h-24 rounded-lg w-full"></div>
-            )}
+            {Array(3)
+              .fill(null)
+              .map((_, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-200 h-24 rounded-lg w-full"
+                ></div>
+              ))}
           </div>
           <div className="flex">
             <div className="bg-slate-300 h-64 rounded-lg w-full"></div>
