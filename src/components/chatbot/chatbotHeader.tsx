@@ -1,6 +1,6 @@
 function ChatbotHeader() {
   return (
-    <div className="relative bg-gradient-to-br from-[#272ddc] to-[#07aff9] text-white h-1/4 rounded-t-xl flex flex-col pt-4 px-4">
+    <div className="relative bg-gradient-to-br from-[#272ddc] to-[#07aff9] text-white h-1/6 lg:h-1/4 rounded-t-xl flex flex-col pt-4 px-4">
       <div className="flex items-start gap-2 mb-4">
         <img
           src="https://avatar.iran.liara.run/public"
