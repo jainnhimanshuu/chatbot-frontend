@@ -63,8 +63,8 @@ const ChatBox: React.FC = () => {
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const toggleEmojiPanel = () => {
-    setIsEmojiPanelOpen((prev) => !prev);
+  const toggleEmojiPanel = (isOpen: boolean) => {
+    setIsEmojiPanelOpen(isOpen);
   };
 
   const handleQuickActionClick = (
@@ -86,16 +86,16 @@ const ChatBox: React.FC = () => {
           onClick={() => setIsChatOpen(true)}
           aria-label="Send message"
           className={cn(
-            "fixed right-[32px] bottom-[72px] rounded-full h-12 w-12 flex items-center justify-center text-2xl cursor-pointer",
+            "fixed  right-[32px] bottom-[72px] rounded-full h-12 w-12 flex items-center justify-center text-2xl cursor-pointer",
             "bg-gradient-to-br from-[#272ddc] to-[#07aff9] text-white hover:from-white hover:text-blue-600 hover:to-white shadow-xl"
           )}
         >
           <RiPencilFill />
         </div>
       ) : (
-        <div className="fixed lg:bottom-10 lg:right-12 z-50 lg:h-4/5 h-full bg-white rounded-2xl lg:max-w-xs w-full bottom-0 right-2 shadow-lg">
+        <div className="fixed  bg-white lg:bottom-10 lg:right-12 z-50 lg:h-4/5 h-full  rounded-2xl lg:max-w-xs w-full bottom-0 right-2 shadow-lg">
           <ChatbotHeader toggleChat={setIsChatOpen} />
-          <div className="p-4 h-4/6 lg:h-2/4 overflow-y-auto">
+          <div className="p-4 h-4/6 lg:h-2/4 overflow-y-auto bg-white">
             {messages.map((msg, index) => (
               <ChatMessage
                 key={index}
@@ -143,6 +143,7 @@ const ChatBox: React.FC = () => {
             toggleEmojiPanel={toggleEmojiPanel}
             message={message}
             setMessage={setMessage}
+            isEmojiPanelOpen={isEmojiPanelOpen}
           />
         </div>
       )}

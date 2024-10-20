@@ -6,7 +6,8 @@ import { cn } from "../../lib/utils";
 
 interface ChatInputProps {
   onSend: (message: string) => void;
-  toggleEmojiPanel: () => void;
+  isEmojiPanelOpen: boolean;
+  toggleEmojiPanel: (isOpen: boolean) => void;
   message: string;
   setMessage: (msg: string) => void;
 }
@@ -28,6 +29,7 @@ const IconButton: React.FC<{
 const ChatInput: React.FC<ChatInputProps> = ({
   onSend,
   toggleEmojiPanel,
+  isEmojiPanelOpen,
   message,
   setMessage,
 }) => {
@@ -50,7 +52,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
       setTimeout(() => setIsButtonClicked(false), 300);
       if (message.trim() !== "") {
         onSend(message);
-        if (!isEnterPressed) toggleEmojiPanel();
+        if (!isEnterPressed) toggleEmojiPanel(false);
         setMessage("");
       }
     },
@@ -78,7 +80,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   );
 
   return (
-    <div className="relative h-1/6 lg:h-1/4 border-t border-slate-200 mx=r-2 ml-4 pt-1 pb-4">
+    <div className="bg-white relative h-1/6 lg:h-1/4 border-t border-slate-200 mx=r-2 pl-4 pt-1 pb-4">
       <textarea
         ref={msgInputRef}
         placeholder="Enter your message..."
@@ -108,7 +110,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           onClick={() => fileInputRef.current?.click()}
         />
         <IconButton
-          onClick={toggleEmojiPanel}
+          onClick={() => toggleEmojiPanel(!isEmojiPanelOpen)}
           icon={
             <BsEmojiLaughing className="ml-2 group-hover:animate-bounce transition-all delay-200" />
           }
