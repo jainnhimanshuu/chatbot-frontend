@@ -1,11 +1,13 @@
+import { TChatStepKey } from "../../types/chatBotTypes";
+
 type ChatStep = {
     botMessage: string;
     quickActions: { label: string; next: keyof typeof chatFlow }[]; 
     showRating?: boolean;
   };
-  
 
-export const chatFlow:Record<string, ChatStep>  = {
+
+export const chatFlow:Record<TChatStepKey, ChatStep>  = {
     start: {
       botMessage: "Hello! How can I help you today?",
       quickActions: [
@@ -48,4 +50,4 @@ export const chatFlow:Record<string, ChatStep>  = {
       botMessage: "You're welcome! Feel free to reach out if you need any further assistance.",
       quickActions: [],
     },
-  };
+  } as const;

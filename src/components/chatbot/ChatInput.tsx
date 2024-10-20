@@ -74,9 +74,10 @@ const ChatInput: React.FC<ChatInputProps> = ({
       if (e.key === "Enter") {
         e.preventDefault();
         handleSend(true);
+        toggleEmojiPanel(false);
       }
     },
-    [handleSend]
+    [handleSend, toggleEmojiPanel]
   );
 
   return (

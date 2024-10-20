@@ -6,18 +6,19 @@ import ChatbotHeader from "./chatbotHeader";
 import { chatFlow } from "./chatFlow";
 import { cn } from "../../lib/utils";
 import { RiPencilFill } from "react-icons/ri";
+import { TChatMessage, TChatStepKey } from "../../types/chatBotTypes";
 
 const ChatBox: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState("start");
+  const [currentStep, setCurrentStep] = useState<TChatStepKey>("start");
   const [isEmojiPanelOpen, setIsEmojiPanelOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  const [messages, setMessages] = useState<
-    { message: string; sender: "user" | "bot"; showRating?: boolean }[]
-  >([{ message: chatFlow.start.botMessage, sender: "bot" }]);
+  const [messages, setMessages] = useState<TChatMessage[]>([
+    { message: chatFlow.start.botMessage, sender: "bot" },
+  ]);
 
-  const sendBotMessage = useCallback(() => {
+  const sendBotMessage = useCallback((): void => {
     // Get the next step in the chat flow based on the current step
     const { botMessage, quickActions, showRating } = chatFlow[currentStep];
     // Simulate a delay before the bot responds
@@ -37,7 +38,7 @@ const ChatBox: React.FC = () => {
   }, [currentStep]);
 
   const handleSendMessage = useCallback(
-    (userMessage: string, nextStepKey?: string) => {
+    (userMessage: string, nextStepKey?: string): void => {
       // Add the user's message to the messages array
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -45,7 +46,8 @@ const ChatBox: React.FC = () => {
       ]);
 
       if (nextStepKey) {
-        const { botMessage, showRating } = chatFlow[nextStepKey];
+        const { botMessage, showRating } =
+          chatFlow[nextStepKey as TChatStepKey];
 
         setMessages((prevMessages) => [
           ...prevMessages,
@@ -71,7 +73,7 @@ const ChatBox: React.FC = () => {
     userResponse: string,
     nextStepKey: string
   ) => {
-    setCurrentStep(nextStepKey);
+    setCurrentStep(nextStepKey as TChatStepKey);
     handleSendMessage(userResponse, nextStepKey);
   };
 
