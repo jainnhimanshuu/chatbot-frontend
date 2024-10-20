@@ -14,18 +14,18 @@ const ChatBox: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const [messages, setMessages] = useState<
-    { message: string; sender: "user" | "bot" }[]
+    { message: string; sender: "user" | "bot"; showRating?: boolean }[]
   >([{ message: chatFlow.start.botMessage, sender: "bot" }]);
 
   const sendBotMessage = useCallback(() => {
     // Get the next step in the chat flow based on the current step
-    const { botMessage, quickActions } = chatFlow[currentStep];
+    const { botMessage, quickActions, showRating } = chatFlow[currentStep];
     // Simulate a delay before the bot responds
     setTimeout(() => {
       // Add the bot's message to the messages array
       setMessages((prevMessages) => [
         ...prevMessages,
-        { message: botMessage, sender: "bot" },
+        { message: botMessage, sender: "bot", showRating },
       ]);
 
       // Check if there are no more quick actions for this step
@@ -45,11 +45,11 @@ const ChatBox: React.FC = () => {
       ]);
 
       if (nextStepKey) {
-        const nextStep = chatFlow[nextStepKey];
+        const { botMessage, showRating } = chatFlow[nextStepKey];
 
         setMessages((prevMessages) => [
           ...prevMessages,
-          { message: nextStep.botMessage, sender: "bot" },
+          { message: botMessage, sender: "bot", showRating },
         ]);
       }
       sendBotMessage();
@@ -101,6 +101,7 @@ const ChatBox: React.FC = () => {
                 key={index}
                 message={msg.message}
                 sender={msg.sender}
+                showRating={msg.showRating}
               />
             ))}
             <div ref={messagesEndRef} />
@@ -123,12 +124,12 @@ const ChatBox: React.FC = () => {
                   >
                     <button
                       key={index}
-                      className="rounded-[20px] px-2 py-1 font-semibold text-sm leading-5 overflow-wrap bg-white"
+                      className="rounded-[20px] px-2 py-1 font-semibold text-sm leading-5 overflow-wrap bg-white hover:bg-transparent group"
                       onClick={() =>
                         handleQuickActionClick(action.label, action.next)
                       }
                     >
-                      <span className="bg-clip-text text-transparent bg-gradient-to-br from-[#272ddc] to-[#07aff9]">
+                      <span className="bg-clip-text text-transparent bg-gradient-to-br from-[#272ddc] to-[#07aff9] group-hover:text-white">
                         {action.label}
                       </span>
                     </button>

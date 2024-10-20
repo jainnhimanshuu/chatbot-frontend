@@ -1,6 +1,7 @@
 type ChatStep = {
     botMessage: string;
     quickActions: { label: string; next: keyof typeof chatFlow }[]; 
+    showRating?: boolean;
   };
   
 
@@ -18,6 +19,7 @@ export const chatFlow:Record<string, ChatStep>  = {
         { label: "Tell me about your services", next: "services" },
         { label: "No, thank you", next: "end" },
       ],
+      showRating: true,
     },
     passwordReset: {
       botMessage:
@@ -26,6 +28,7 @@ export const chatFlow:Record<string, ChatStep>  = {
         { label: "Tell me about your services", next: "services" },
         { label: "No, thank you", next: "end" },
       ],
+      showRating: true,
     },
     services: {
       botMessage: "We offer web development, app development, and consulting services.",
@@ -39,6 +42,7 @@ export const chatFlow:Record<string, ChatStep>  = {
       quickActions: [
         { label: "Thank you", next: "end" },
       ],
+      showRating: true,
     },
     end: {
       botMessage: "You're welcome! Feel free to reach out if you need any further assistance.",
